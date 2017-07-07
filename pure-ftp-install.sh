@@ -13,7 +13,7 @@ fi
 if [ -e /etc/debian_version ]; then
 
 	if [ -e /etc/pure-ftpd ]; then
-	
+		
 		while :
 		do
 			echo "Pure-FTP is already installed."
@@ -23,6 +23,7 @@ if [ -e /etc/debian_version ]; then
 			echo "3) Delete a user"
 			echo "4) Remove Pure-FTP and configurations"
 			echo "5) Exit"
+			read -p "Select an Option: " option
 			case $option in
 				1)
 					read -p "Enter a Username: " -e ADDUSERNAME
@@ -85,13 +86,13 @@ if [ -e /etc/debian_version ]; then
 			apt-get --yes update
 			apt-get --yes install pure-ftpd
 			IP=$(curl ip.mtak.nl -4)
-			cd /etc/pure-ftpd
+			cd /etc/pure-ftpd/conf
 			touch ForcePassiveIP
 			touch PassivePortRange
-			echo -e "$IP" | tee -a /etc/pure-ftpd/ForcePassiveIP
-			echo -e "10110 10210" | tee -a /etc/pure-ftpd/PassivePortRange
-			perl -pi -e "s/1000/1/g" /etc/pure-ftpd/MinUID
-			perl -pi -e "s/yes/no/g" /etc/pure-ftpd/PAMAuthentication
+			echo -e "$IP" | tee -a /etc/pure-ftpd/conf/ForcePassiveIP
+			echo -e "10110 10210" | tee -a /etc/pure-ftpd/conf/PassivePortRange
+			perl -pi -e "s/1000/1/g" /etc/pure-ftpd/conf/MinUID
+			perl -pi -e "s/yes/no/g" /etc/pure-ftpd/conf/PAMAuthentication
 			ln -s /etc/pure-ftpd/conf/PureDB /etc/pure-ftpd/auth/50pure
 		else
 			echo "Closing now.."
