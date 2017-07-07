@@ -88,7 +88,6 @@ if [ -e /etc/debian_version ]; then
 			cd /etc/pure-ftpd
 			touch ForcePassiveIP
 			touch PassivePortRange
-			chmod 
 			echo -e "$IP" | tee -a /etc/pure-ftpd/ForcePassiveIP
 			echo -e "10110 10210" | tee -a /etc/pure-ftpd/PassivePortRange
 			perl -pi -e "s/1000/1/g" /etc/pure-ftpd/MinUID
