@@ -29,10 +29,20 @@ if [ -e /etc/debian_version ]; then
 					read -p "Enter a Username: " -e ADDUSERNAME
 					read -p "Enter $ADDUSERNAME's password: " -e ADDPASSWORD
 					read -p "Enter $ADDUSERNAME's directory: " -e -i /home/$ADDUSERNAME ADDUSERDIR
+					read -p "Is this an http user? [y/n]: " -e HTTP
 					echo ""
 					echo "The User is creating now... Please wait."
 					echo ""
-					echo -e "$ADDPASSWORD\\n$ADDPASSWORD" | pure-pw useradd $ADDUSERNAME -u www-data -d $ADDUSERDIR
+					if [ "$HTTP" = "y" ]; then
+						echo -e "$ADDPASSWORD\\n$ADDPASSWORD" | pure-pw useradd $ADDUSERNAME -u www-data -d $ADDUSERDIR
+					else
+						if [ "$HTTP" = "n" ]; then
+							echo -e "$ADDPASSWORD\\n$ADDPASSWORD" | pure-pw useradd $ADDUSERNAME -u $ADDUSERNAME -d $ADDUSERDIR
+						else
+							echo "Please enter y or n"
+							exit
+						fi
+					fi
 					pure-pw mkdb
 					if [ -e /etc/init.d/pure-ftpd ]; then
 						/etc/init.d/pure-ftpd restart
@@ -56,8 +66,8 @@ if [ -e /etc/debian_version ]; then
 						pure-pw userdel $DELUSERNAME -m
 						pure-pw mkdb
 					else
-					echo "Closing now.."
-					exit
+						echo "Closing now.."
+						exit
 					fi
 					exit
 					;;
@@ -67,7 +77,7 @@ if [ -e /etc/debian_version ]; then
 						apt-get remove --purge --yes pure-ftpd
 						apt-get --yes autoremove
 						if [ -e /etc/pure-ftpd ]; then
-							rm -rf /etc/pur-ftpd
+							rm -rf /etc/pure-ftpd
 						fi
 					else
 						echo "Closing now.."
