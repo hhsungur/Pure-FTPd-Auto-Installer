@@ -51,7 +51,7 @@ if [ -e /etc/debian_version ]; then
 				3)
 					read -p "Enter the username: " -e DELUSERNAME
 					read -p "Are you sure? [y/n]: " -e -i n TTT
-					if [ "TTT" = "y" ]; then
+					if [ "$TTT" = "y" ]; then
 						pure-pw userdel $DELUSERNAME -m
 						pure-pw mkdb
 					else
@@ -62,7 +62,7 @@ if [ -e /etc/debian_version ]; then
 					;;
 				4)
 					read -p "Are you sure? [y/n]: " -e -i n TTTT
-					if [ "TTTT" = "y" ]; then
+					if [ "$TTTT" = "y" ]; then
 						apt-get remove --purge --yes pure-ftpd
 						apt-get --yes autoremove
 						if [ -e /etc/pure-ftpd ]; then
@@ -81,7 +81,7 @@ if [ -e /etc/debian_version ]; then
 		done
 	else
 		read -p "Pure-FTP is not installed. Do you want to install? [y/n]: " -e -i y TT
-		if [ "TT" = "y" ]; then
+		if [ "$TT" = "y" ]; then
 			apt-get --yes update
 			apt-get --yes install pure-ftpd
 			IP=$(curl ip.mtak.nl -4)
